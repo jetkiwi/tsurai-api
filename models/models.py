@@ -5,6 +5,7 @@ import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE']
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 30;
 db = SQLAlchemy(app)
 
 
