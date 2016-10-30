@@ -24,7 +24,7 @@ class User(db.Model):
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,nullable=False)
-    tsurami = db.Column(db.Numeric, nullable=False)
+    tsurami = db.Column(db.Numeric(10,9), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
     annotation = db.Column(db.String(140))
 
