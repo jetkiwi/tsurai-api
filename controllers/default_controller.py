@@ -6,6 +6,7 @@ from datetime import datetime
 from models.models import db
 from models.models import User
 from models.models import Posts
+from models.models import Connection
 from decorator import decorator
 from sqlalchemy.sql import select
 from sqlalchemy.orm import session
@@ -45,7 +46,12 @@ def name_to_id(username):
     users = q.all()
     if len(users)==1:
         return users[0].id
-    raise ValueError
+    else:
+        raise ValueError
+
+def following(user_id):
+    q = db.session.query(Connection.target_id).filter(Connection.user_id==user_id)
+    return [r for r, in q.all()]
 
 @requires_auth
 def status_annotate_post(id, body) -> str:
@@ -53,7 +59,11 @@ def status_annotate_post(id, body) -> str:
 
 @requires_auth
 def status_home_tsurailine_get() -> str:
-    return 'do some magic!'
+    user_id = name_to_id(flask.request.authorization.username)
+    users = following(user_id)+[user_id]
+    q = db.session.query(Posts).filter(Posts.user_id.in_(users))
+    return flask.jsonify([{"status_id":p.id,"user_id":p.user_id, "tsurami":float(p.tsurami),"timestamp":p.timestamp} for p in q.all()])
+
 
 @requires_auth
 def status_update_post(file) -> str:

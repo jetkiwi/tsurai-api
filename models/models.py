@@ -32,6 +32,13 @@ class Posts(db.Model):
         self.tsurami = tsurami
         self.timestamp = timestamp
 
+    def __repr__(self):
+        return '<ID:{0} User:{1} Tsurami:{2}>'.format(self.id, self.user_id, self.tsurami)
+
 class Connection(db.Model):
     user_id = db.Column(db.Integer,nullable=False, primary_key=True, autoincrement=False)
     target_id = db.Column(db.Integer,nullable=False, primary_key=True, autoincrement=False)
+
+    def __init__(self, user_id, target_id):
+        self.user_id = user_id
+        self.target_id = target_id

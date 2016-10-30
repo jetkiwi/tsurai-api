@@ -101,6 +101,12 @@ definitions:
       status_id:
         type: "number"
         description: "The id of status"
+      user_id:
+        type: "number"
+        description: "The id of the user"
+      timestamp:
+        type: "string"
+        description: "The time of the post"
       tsurami:
         type: "number"
         description: "The strength of Tsurai"
