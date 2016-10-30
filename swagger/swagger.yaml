@@ -1,0 +1,116 @@
+---
+swagger: "2.0"
+info:
+  description: "Share your Tsurai"
+  version: "1.0.0"
+  title: "Tsurai API"
+host: "api.tsurai.org"
+basePath: "/v1"
+schemes:
+- "https"
+produces:
+- "application/json"
+paths:
+  /status/annotate:
+    post:
+      tags:
+      - "default_controller"
+      summary: "Annotate a Tsurai Status"
+      description: "This endpoint allows users to add comments about their Tsurai\
+        \ status.\n"
+      operationId: "controllers.default_controller.status_annotate_post"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "Tsurai status id"
+        required: true
+        type: "number"
+        format: "integer"
+      - name: "body"
+        in: "query"
+        description: "Annotation"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Succesful response"
+  /status/home_tsurailine:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Home TsuraiLine"
+      description: "This endpoint allows users to obtain their followers Tsurai statuses\n"
+      operationId: "controllers.default_controller.status_home_tsurailine_get"
+      parameters: []
+      responses:
+        200:
+          description: "An array of Tsurai statuses"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Status"
+  /status/update:
+    post:
+      tags:
+      - "default_controller"
+      summary: "Post Tsurai to TL(TsuraiLine)"
+      description: "This endpoint allows users to post their own Tsurai data by posting\
+        \ images containing their face.\n"
+      operationId: "controllers.default_controller.status_update_post"
+      parameters:
+      - name: "file"
+        in: "formData"
+        description: "Image of the user. Cannot exceed 4MB."
+        required: true
+        type: "file"
+        format: "binary"
+      responses:
+        200:
+          description: "A status id"
+          schema:
+            type: "integer"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+  /status/user/{user_id}:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Get user Tsurai line"
+      description: "Get user Tsurai line"
+      operationId: "controllers.default_controller.status_user_user_id_get"
+      parameters:
+      - name: "user_id"
+        in: "path"
+        description: "User id"
+        required: true
+        type: "number"
+        format: "integer"
+      responses:
+        200:
+          description: "A successful response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Status"
+definitions:
+  Status:
+    type: "object"
+    properties:
+      status_id:
+        type: "number"
+        description: "The id of status"
+      tsurami:
+        type: "number"
+        description: "The strength of Tsurai"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
