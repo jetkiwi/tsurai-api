@@ -85,8 +85,7 @@ paths:
         in: "path"
         description: "User id"
         required: true
-        type: "number"
-        format: "integer"
+        type: "string"
       responses:
         200:
           description: "A successful response"

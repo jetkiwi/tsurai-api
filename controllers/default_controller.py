@@ -88,5 +88,8 @@ def status_update_post(file) -> str:
     return resp
 
 @requires_auth
-def status_user_user_id_get(userId) -> str:
-    return 'do some magic!'
+def status_user_user_id_get(user_id) -> str:
+    user_id = int(user_id)
+    q = db.session.query(Posts).filter(Posts.user_id==user_id)
+    return flask.jsonify([{"status_id":p.id,"user_id":p.user_id, "tsurami":float(p.tsurami),"timestamp":p.timestamp} for p in q.all()])
+
